@@ -7,10 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.Properties;
 
 @WebServlet("/users")
@@ -64,10 +61,26 @@ public class UsersServlet extends HttpServlet {
         String lastName = req.getParameter("last-name");
 
         try {
+            /*
+             * данный запрос небезопасен, т.к. использует строку и конкатенацию строк в SQL - запросе
+             * можно  полем firstName отправить строку как SQL иньекцию, например
+             * temp','temp');DROP TABLE fix_car;SELECT('temp
+             *
+             * в результате таблица fix_car будет удалена
+             *
+
             Statement statement = connection.createStatement();
             String sqlInsert = "INSERT INTO fix_user(first_name, last_name)" +
                     "VALUES('" + firstName + "','" + lastName + "');";
             statement.execute(sqlInsert);
+
+             */
+
+            PreparedStatement preparedStatement = connection.prepareStatement
+                    ("INSERT INTO fix_user(first_name, last_name) VALUES (?, ?)");
+            preparedStatement.setString(1, firstName);
+            preparedStatement.setString(2, lastName);
+            preparedStatement.execute();
 
         } catch(SQLException e) {
             throw new IllegalStateException();

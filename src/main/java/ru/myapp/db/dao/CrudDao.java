@@ -1,6 +1,7 @@
 package ru.myapp.db.dao;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  *
@@ -14,7 +15,12 @@ import java.util.List;
  */
 
 public interface CrudDao <T> {
-    T find(Integer id);
+
+    /* это общий интерфейс
+     * самые базовые операции в системе
+     * собственно CRUD
+     */
+    Optional<T> find(Integer id);
     void save(T model);
     void update(T model);
     void delete(Integer id);

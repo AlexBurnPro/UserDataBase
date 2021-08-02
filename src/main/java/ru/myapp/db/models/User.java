@@ -1,11 +1,22 @@
 package ru.myapp.db.models;
 
+/**
+ *
+ *  в MVC - это Model
+ */
+
 public class User {
     private int id;
     private String firsName;
     private String lastName;
 
     public User() {
+    }
+
+    public User(int id, String firsName, String lastName) {
+        this.id = id;
+        this.firsName = firsName;
+        this.lastName = lastName;
     }
 
     public User(String firsName, String lastName) {

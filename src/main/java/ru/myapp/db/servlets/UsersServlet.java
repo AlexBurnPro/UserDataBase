@@ -41,6 +41,7 @@ public class UsersServlet extends HttpServlet {
     }
 
     /**
+     *   addUser.jsp - страница появляется в ответ на GET-запрос /users
      *   на эту страницу пользователь вводит свои данные
      */
     @Override
@@ -52,7 +53,7 @@ public class UsersServlet extends HttpServlet {
      *
      *     <form method="post" action="/users"> данные с этой страницы уйдут POST запросом,
      *     из форм попадут в переменные
-     *     затем будет создан объект Statement, который выполнит SQL запрос в БД на добавление нового user
+     *     затем будет создан объект PrepareStatement, который выполнит SQL запрос в БД на добавление нового user
      *     используя данные из форм
      */
     @Override

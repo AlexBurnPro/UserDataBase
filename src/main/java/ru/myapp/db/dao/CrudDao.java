@@ -20,7 +20,8 @@ public interface CrudDao <T> {
      * самые базовые операции в системе
      * собственно CRUD
      */
-    Optional<T> find(Integer id);
+
+    Optional<T> find(Integer id);     //вместо null возвращается пустой объект Optional.empty
     void save(T model);
     void update(T model);
     void delete(Integer id);

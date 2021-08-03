@@ -24,6 +24,21 @@
             <artifactId>postgresql</artifactId>
             <version>42.2.2</version>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/jstl/jstl -->
+        <dependency>
+            <groupId>jstl</groupId>
+            <artifactId>jstl</artifactId>
+            <version>1.2</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.springframework/spring-jdbc -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jdbc</artifactId>
+            <version>4.3.15.RELEASE</version>
+        </dependency>
+
     </dependencies>
 
     <build>

@@ -11,18 +11,26 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.Properties;
 
+
+/**
+ *  создаем connection к БД с помощью Spring JDBC
+ */
 @WebServlet("/allUsers")
 public class UsersServletWithDao extends HttpServlet {
 
     private UsersDao usersDao;
 
+    /**
+     * @DriverManagerDataSource предоставляет Spring объект connection к БД
+     *     передается в конструктор класса UsersDaoJdbcImpl
+     *     забираем настройки конфигурации из файла db.properties c помощью Properties
+     */
     @Override
     public void init() throws ServletException {
         Properties properties = new Properties();
-        DriverManagerDataSource dataSource = new DriverManagerDataSource();    //Spring. объект предоставляет connection к БД
+        DriverManagerDataSource dataSource = new DriverManagerDataSource();
 
         try {
             properties.load(new FileInputStream(getServletContext().getRealPath("/WEB-INF/classes/db.properties")));

@@ -10,14 +10,22 @@ import java.io.IOException;
 import java.sql.*;
 import java.util.Properties;
 
+/**
+ *  создаем connection с БД с помощью JDBC
+ *  сервлет выводит страницу для регистрации (добавления) пользователя в БД (GET)
+ *  и добавляет пользователя в БД (POST)
+ */
+
 @WebServlet("/users")
 public class UsersServlet extends HttpServlet {
 
     private Connection connection;
 
     /**
-     * создаем соедеинение с БД
-     * @throws ServletException
+     * создаем соединение с БД
+     *    DriverManager является уровнем управления JDBC,
+     *    отслеживает все доступные драйверы и управляет установлением соединений между БД и соответствующим драйвером
+     *
      *    забираем настройки конфигурации из файла db.properties c помощью Properties
      *    драйвер jdbc загружаем с помощью Reflection
      *    создаем Connection
@@ -32,6 +40,9 @@ public class UsersServlet extends HttpServlet {
             String dbPassword = properties.getProperty("db.password");
             String dbDriverClassName = properties.getProperty("db.driverClassName");
 
+            /*
+             * указание диспетчеру драйверов JDBC, какой именно драйвер загрузить
+             */
             Class.forName(dbDriverClassName);
             connection = DriverManager.getConnection(dbUrl, dbUsername, dbPassword);
 

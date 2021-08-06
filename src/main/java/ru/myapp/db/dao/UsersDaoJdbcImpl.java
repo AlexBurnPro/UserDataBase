@@ -20,6 +20,9 @@ public class UsersDaoJdbcImpl implements UsersDao{
 
     private Connection connection;
 
+    /**
+     *    при вызове конструктора открывается соединение с БД
+     */
     public UsersDaoJdbcImpl(DataSource dataSource) {
         try{
             this.connection = dataSource.getConnection();

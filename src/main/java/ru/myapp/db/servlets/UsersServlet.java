@@ -19,6 +19,9 @@ import java.util.Properties;
 @WebServlet("/users")
 public class UsersServlet extends HttpServlet {
 
+    /*
+     * экземпляр класса Connection - это собственно, подключение к БД
+     */
     private Connection connection;
 
     /**
@@ -44,6 +47,13 @@ public class UsersServlet extends HttpServlet {
              * указание диспетчеру драйверов JDBC, какой именно драйвер загрузить
              */
             Class.forName(dbDriverClassName);
+
+            /*
+             * DriverManager позволяет подключиться к базе данных по указанному URL,
+             * а так же загружает JDBC Driver'ы
+             *
+             * получаем доступ к БД
+             */
             connection = DriverManager.getConnection(dbUrl, dbUsername, dbPassword);
 
         } catch (IOException | SQLException | ClassNotFoundException e) {

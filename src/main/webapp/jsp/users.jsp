@@ -13,8 +13,7 @@
     по факту JSP становится как класс.java сервлет, т.к наследуется от HttpServlet, от его производного класса
 --%>
 <%--
-    страница верстается в HTML, форма для
-
+    страница выводит список зарегистрированных пользователей
 --%>
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -34,10 +33,12 @@
     <table>
         <tr>
             <th>First name</th>
+            <th>Last name</th>
         </tr>
         <c:forEach items="${usersFromServer}" var="user">
             <tr>
                 <td>${user.firstName}</td>
+                <td>${user.lastName}</td>
             </tr>
         </c:forEach>
     </table>

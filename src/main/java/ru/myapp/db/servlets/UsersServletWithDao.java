@@ -3,6 +3,7 @@ package ru.myapp.db.servlets;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import ru.myapp.db.dao.UsersDao;
 import ru.myapp.db.dao.UsersDaoJdbcImpl;
+import ru.myapp.db.models.User;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.List;
 import java.util.Properties;
 
 
@@ -52,6 +54,8 @@ public class UsersServletWithDao extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        
+        List<User> users = usersDao.findAll();
+        req.setAttribute("usersFromServer", users);
+        req.getServletContext().getRequestDispatcher("/jsp/users.jsp").forward(req,resp);
     }
 }

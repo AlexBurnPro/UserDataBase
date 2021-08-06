@@ -7,7 +7,7 @@ package ru.myapp.db.models;
 
 public class User {
     private int id;
-    private String firsName;
+    private String firstName;
     private String lastName;
 
     public User() {
@@ -15,12 +15,12 @@ public class User {
 
     public User(int id, String firsName, String lastName) {
         this.id = id;
-        this.firsName = firsName;
+        this.firstName = firsName;
         this.lastName = lastName;
     }
 
     public User(String firsName, String lastName) {
-        this.firsName = firsName;
+        this.firstName = firsName;
         this.lastName = lastName;
     }
 
@@ -32,12 +32,12 @@ public class User {
         this.id = id;
     }
 
-    public String getFirsName() {
-        return firsName;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setFirsName(String firsName) {
-        this.firsName = firsName;
+    public void setFirstName(String firsName) {
+        this.firstName = firstName;
     }
 
     public String getLastName() {

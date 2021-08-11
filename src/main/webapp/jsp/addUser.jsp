@@ -24,7 +24,7 @@
     <div class="form-style-2-heading">
         Please, add user!
     </div>
-    <form method="post" action="/users">
+    <form method="post" action="/addUser">
         <label for="first-name">First Name
             <input class="input-field" type="text" id="first-name" name="first-name">
         </label>

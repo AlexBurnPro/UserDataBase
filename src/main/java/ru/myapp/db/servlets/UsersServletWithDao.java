@@ -3,6 +3,7 @@ package ru.myapp.db.servlets;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import ru.myapp.db.dao.UsersDao;
 import ru.myapp.db.dao.UsersDaoJdbcImpl;
+import ru.myapp.db.dao.UsersDaoJdbcTemplateImpl;
 import ru.myapp.db.models.User;
 
 import javax.servlet.ServletException;
@@ -17,9 +18,13 @@ import java.util.Properties;
 
 
 /**
- *  создаем connection к БД с помощью Spring JDBC
+ *  получение списка всех зарегистрированных пользователей /allUsers
+ *  что бы вывести список рользователей из БД нужен слой DAO - механизм доступа к данным
+ *
+ *  реализация подключения к БД на JDBC (UsersDaoJdbcImpl)
+ *      или с помощью SpringJDBC (UsersDaoJdbcTemplateImpl)
  */
-@WebServlet("/allUsers")
+@WebServlet("/users")
 public class UsersServletWithDao extends HttpServlet {
 
     private UsersDao usersDao;
@@ -46,7 +51,12 @@ public class UsersServletWithDao extends HttpServlet {
             dataSource.setPassword(dbPassword);
             dataSource.setDriverClassName(dbDriverClassName);
 
-            usersDao = new UsersDaoJdbcImpl(dataSource);
+            /*
+             *  на выбор 2 реализации
+             *      UsersDaoJdbcTemplateImpl - под капотом SpringJDBC
+             *      UsersDaoJdbcImpl на чистом JDBC
+             */
+            usersDao = new UsersDaoJdbcTemplateImpl(dataSource);
         } catch (IOException e){
             throw new IllegalStateException();
         }

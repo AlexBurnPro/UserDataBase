@@ -1,8 +1,7 @@
 package ru.myapp.db.models;
 
 /**
- *
- *  в MVC - это Model
+ *  Model
  */
 
 public class User {

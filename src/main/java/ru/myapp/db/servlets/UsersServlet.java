@@ -11,12 +11,19 @@ import java.sql.*;
 import java.util.Properties;
 
 /**
- *  создаем connection с БД с помощью JDBC
+ *  добавление пользователей в БД на странице /addUser
+ *
+ *  реализация подключения к БД на чистом JDBC
  *  сервлет выводит страницу для регистрации (добавления) пользователя в БД (GET)
- *  и добавляет пользователя в БД (POST)
+ *  и получает данные пользователя (POST)
+ *
+ *  т.е что бы занести данные в БД слой DAO не нужен:
+ *      1. Коннектимся к БД (урл логин пароль JDBC драйвер)
+ *      2. Получаем данные из POST запроса
+ *      3. отправляем SQL c данными в БД
  */
 
-@WebServlet("/users")
+@WebServlet("/addUser")
 public class UsersServlet extends HttpServlet {
 
     /*
@@ -62,7 +69,7 @@ public class UsersServlet extends HttpServlet {
     }
 
     /**
-     *   addUser.jsp - страница появляется в ответ на GET-запрос /users
+     *   addUser.jsp - страница появляется в ответ на GET-запрос /addUser
      *   на эту страницу пользователь вводит свои данные
      */
     @Override
@@ -71,8 +78,7 @@ public class UsersServlet extends HttpServlet {
     }
 
     /**
-     *
-     *     <form method="post" action="/users"> данные с этой страницы уйдут POST запросом,
+     *     <form method="post" action="/addUser"> данные с этой страницы придут POST запросом,
      *     из форм попадут в переменные
      *     затем будет создан объект PrepareStatement, который выполнит SQL запрос в БД на добавление нового user
      *     используя данные из форм

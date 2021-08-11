@@ -1,11 +1,4 @@
 <%--
-  Created by IntelliJ IDEA.
-  User: weter
-  Date: 01.07.2021
-  Time: 18:41
-  To change this template use File | Settings | File Templates.
---%>
-<%--
     используется библиотека тегов JSP (JavaServer Pages Standard Tag Library, JSTL)
     выражение оформленное как Expression Languages EL, ${} можно производить операции над объявленными переменными
     request.getAttribute("usersFromServer") - передача на страницу JSP данных, созданных на стороне сервера
@@ -21,7 +14,7 @@
 
 <html>
 <head>
-    <title>Title</title>
+    <title>Users</title>
     <link href="/css/styles.css" rel="stylesheet" type="text/css">
 </head>
 <body>

@@ -8,6 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ *  реализация подключения к БД на чистом JDBC
+ *      с Connection, PrepareStatement и пр. книгами из java.sql.*;
+ */
 public class UsersDaoJdbcImpl implements UsersDao{
 
     //language=SQL

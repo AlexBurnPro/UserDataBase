@@ -23,6 +23,15 @@ public class UsersDaoJdbcTemplateImpl implements UsersDao {
     private final String SQL_SELECT_ALL =
             "SELECT * FROM fix_user";
 
+    //language=SQL
+    private final String SQL_SELECT_BY_FIRST_NAME =
+            "SELECT * FROM fix_user WHERE first_name = ?";
+
+    //language=SQL
+    private final String SQL_SELECT_USERS_WITH_CAR =
+            "SELECT fix_user.*, fix_car.id as car_id, fix_car.model " +
+                    "FROM fix_user LEFT JOIN fix_car ON fix_user.id = fix_car.owner_id WHERE fix_user.id = ?";
+
     /**
      *   SpringJDBC RowMapper отображает строку i объекта ResultSet в объект User
      *      т.е. правило, по которому строки ResultSet преобразуется в объект User
@@ -44,7 +53,7 @@ public class UsersDaoJdbcTemplateImpl implements UsersDao {
 
     @Override
     public List<User> findAllByFirstName(String firstName) {
-        return null;
+        return jdbcTemplate.query(SQL_SELECT_BY_FIRST_NAME, userRowMapper, firstName);
     }
 
     @Override

@@ -3,14 +3,14 @@ package ru.myapp.db.models;
 import java.util.List;
 
 /**
- *  Model
+ *  отображение таблиц в models
  */
 
 public class User {
     private int id;
     private String firstName;
     private String lastName;
-    private List<User> users;
+    private List<Car> cars;
 
     public User() {
     }
@@ -26,11 +26,11 @@ public class User {
         this.lastName = lastName;
     }
 
-    public User(int id, String firstName, String lastName, List<User> users) {
+    public User(int id, String firstName, String lastName, List<Car> cars) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.users = users;
+        this.cars = cars;
     }
 
     public int getId() {
@@ -55,5 +55,13 @@ public class User {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public List<Car> getCars() {
+        return cars;
+    }
+
+    public void setCars(List<Car> cars) {
+        this.cars = cars;
     }
 }

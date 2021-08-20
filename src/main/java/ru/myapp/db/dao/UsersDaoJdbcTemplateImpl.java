@@ -2,22 +2,25 @@ package ru.myapp.db.dao;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import ru.myapp.db.models.Car;
 import ru.myapp.db.models.User;
 
 import javax.sql.DataSource;
-import java.util.List;
-import java.util.Optional;
+import java.sql.ResultSet;
+import java.util.*;
 
 /**
  *  реализация подключения к БД на Spring JDBC
  *
  *  JdbcTemplate - слой между чистым JDBC и бизнес-логикой, дает полный контроль над SQL-запросом
  *      Connection, PrepareStatement и прочие под капотом
+ *
  */
 
 public class UsersDaoJdbcTemplateImpl implements UsersDao {
 
     private JdbcTemplate jdbcTemplate;
+    private Map<Integer, User> userMap = new HashMap<>();
 
     //language=SQL
     private final String SQL_SELECT_ALL =
@@ -33,18 +36,45 @@ public class UsersDaoJdbcTemplateImpl implements UsersDao {
                     "FROM fix_user LEFT JOIN fix_car ON fix_user.id = fix_car.owner_id WHERE fix_user.id = ?";
 
     /**
-     *   SpringJDBC RowMapper отображает строку i объекта ResultSet в объект User
+     *   SpringJDBC RowMapper используется JdbcTemplate для отображения строк ResultSet для каждой строки,
+     *   обрабатывает отдельно каждую запись, полученную из БД,
+     *   и возвращает уже готовый объект - модель данных
+     *   Каждую строку здесь обрабатываем отдельно при помощи ResultSet.
+     *   отображает строку i объекта ResultSet в объект User
      *      т.е. правило, по которому строки ResultSet преобразуется в объект User
-     *      получаем объект RowMapper для передачи в метод findAll()
-     *
      *      замена конструкции на чистом JDBC с List, ResultSet и while
+     *
+     *  получаем объект RowMapper для передачи в метод findAll() найти объекты User
      */
     private RowMapper<User> userRowMapper
-            = (resultSet, i) -> {
+            = (ResultSet resultSet, int i) -> {
         return new User(
+
                 resultSet.getInt("id"),
                 resultSet.getString("first_name"),
                 resultSet.getString("last_name"));
+    };
+
+    /**
+     *  получаем объект RowMapper для передачи в метод find() найти User и их Car
+     */
+    private RowMapper<User> userRowMapperForMap
+            = (ResultSet resultSet, int i) -> {
+
+                Integer id = resultSet.getInt("id");
+
+                if(!userMap.containsKey(id)) {
+                    String firstName = resultSet.getString("first_name");
+                    String lastName = resultSet.getString("last_name");
+
+                    User user = new User(id, firstName, lastName, new ArrayList<>());
+                    userMap.put(id, user);
+                }
+
+                Car car = new Car(resultSet.getInt("id"), resultSet.getString("model"), userMap.get(id));
+                userMap.get(id).getCars().add(car);
+
+                return userMap.get(id);
     };
 
     public UsersDaoJdbcTemplateImpl(DataSource dataSource) {
@@ -58,6 +88,11 @@ public class UsersDaoJdbcTemplateImpl implements UsersDao {
 
     @Override
     public Optional<User> find(Integer id) {
+        jdbcTemplate.query(SQL_SELECT_USERS_WITH_CAR, userRowMapperForMap, id);
+
+        if(userMap.containsKey(id)) {
+            return Optional.of(userMap.get(id));
+        }
         return Optional.empty();
     }
 

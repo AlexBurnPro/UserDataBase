@@ -14,6 +14,7 @@ import java.util.Properties;
  *  добавление пользователей в БД на странице /addUser
  *
  *  реализация подключения к БД на чистом JDBC
+ *  @WebServlet("/addUser") указывает Tomcat какой запрос на какой сервлет отправить
  *  сервлет выводит страницу для регистрации (добавления) пользователя в БД (GET)
  *  и получает данные пользователя (POST)
  *
@@ -32,7 +33,7 @@ public class UsersServlet extends HttpServlet {
     private Connection connection;
 
     /**
-     * создаем соединение с БД
+     * создаем соединение с БД через DriverManager
      *    DriverManager является уровнем управления JDBC,
      *    отслеживает все доступные драйверы и управляет установлением соединений между БД и соответствующим драйвером
      *
@@ -56,10 +57,20 @@ public class UsersServlet extends HttpServlet {
             Class.forName(dbDriverClassName);
 
             /*
-             * DriverManager позволяет подключиться к базе данных по указанному URL,
-             * а так же загружает JDBC Driver'ы
+             * в JDBC существует два способа подключения к БД: Через DataSource и через DriverManager
              *
-             * получаем доступ к БД
+             *      1. доступ к БД через connection и DataSource (параметры URL, username, password)
+             *         через конструктор коасса реализующего интерфейс DAO
+             *         this.connection = dataSource.getConnection();
+             *
+             *         а так же используя JdbcTemplate который предоставляет Spring Jdbc
+             *         this.jdbcTemplate = new JdbcTemplate(dataSource);
+             *
+             *      2. доступ к БД через DriverManager (параметры URL, username, password)
+             *         connection = DriverManager.getConnection(Url, Username, Password);
+             *
+             *         ранее должен быть загруже класс драйвера БД
+             *         Class.forName(dbDriverClassName);
              */
             connection = DriverManager.getConnection(dbUrl, dbUsername, dbPassword);
 
@@ -108,6 +119,19 @@ public class UsersServlet extends HttpServlet {
                     ("INSERT INTO fix_user(first_name, last_name) VALUES (?, ?)");
             preparedStatement.setString(1, firstName);
             preparedStatement.setString(2, lastName);
+            /*
+             *  prepareStatement.executeQuery() - запрос, результатом которого является
+             *      один единственный набор значений, такого как запрос типа SELECT, получаем ResultSet
+             *
+             *  prepareStatement.execute() - используется, когда операторы SQL
+             *      возвращают более одного набора данных, более одного счетчика обновлений или и то, и другое
+             *
+             *  prepareStatement.executeUpdate() -  используется для выполнения операторов управления данными
+             *      типа INSERT, UPDATE или DELETE (DML - Data Manipulation Language),
+             *      для операторов определения структуры БД - CREATE TABLE, DROP TABLE (DDL- Data Definition Language)
+             *      Результатом выполнения операторов INSERT, UPDATE, или DELETE является изменения
+             *      одной или более строк таблицы.
+             */
             preparedStatement.execute();
 
         } catch(SQLException e) {

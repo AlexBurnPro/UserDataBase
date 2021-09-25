@@ -71,12 +71,30 @@ public class UsersDaoJdbcTemplateImpl implements UsersDao {
                     userMap.put(id, user);
                 }
 
-                Car car = new Car(resultSet.getInt("id"), resultSet.getString("model"), userMap.get(id));
+                Car car = new Car(resultSet.getInt("id"),
+                        resultSet.getString("model"),
+                        userMap.get(id));
                 userMap.get(id).getCars().add(car);
 
                 return userMap.get(id);
     };
 
+    /*
+     * в JDBC существует два способа подключения к БД: Через DataSource и через DriverManager
+     *
+     *      1. доступ к БД через connection и DataSource (параметры URL, username, password)
+     *         через конструктор коасса реализующего интерфейс DAO
+     *         this.connection = dataSource.getConnection();
+     *
+     *         а так же используя JdbcTemplate который предоставляет Spring Jdbc
+     *         this.jdbcTemplate = new JdbcTemplate(dataSource);
+     *
+     *      2. доступ к БД через DriverManager (параметры URL, username, password)
+     *         connection = DriverManager.getConnection(Url, Username, Password);
+     *
+     *         ранее должен быть загруже класс драйвера БД
+     *         Class.forName(dbDriverClassName);
+     */
     public UsersDaoJdbcTemplateImpl(DataSource dataSource) {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }

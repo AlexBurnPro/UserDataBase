@@ -30,7 +30,8 @@ public class UsersServletWithDao extends HttpServlet {
     private UsersDao usersDao;
 
     /**
-     * @DriverManagerDataSource предоставляет Spring объект connection к БД
+     *  создаем соединение с БД через DataSource
+     *     @DriverManagerDataSource предоставляет Spring объект connection к БД
      *     передается в конструктор класса UsersDaoJdbcImpl
      *     забираем настройки конфигурации из файла db.properties c помощью Properties
      */
@@ -45,6 +46,23 @@ public class UsersServletWithDao extends HttpServlet {
             String dbUsername = properties.getProperty("db.username");
             String dbPassword = properties.getProperty("db.password");
             String dbDriverClassName = properties.getProperty("db.driverClassName");
+
+            /*
+             * в JDBC существует два способа подключения к БД: Через DataSource и через DriverManager
+             *
+             *      1. доступ к БД через connection и DataSource (параметры URL, username, password)
+             *         через конструктор коасса реализующего интерфейс DAO
+             *         this.connection = dataSource.getConnection();
+             *
+             *         а так же используя JdbcTemplate который предоставляет Spring Jdbc
+             *         this.jdbcTemplate = new JdbcTemplate(dataSource);
+             *
+             *      2. доступ к БД через DriverManager (параметры URL, username, password)
+             *         connection = DriverManager.getConnection(Url, Username, Password);
+             *
+             *         ранее должен быть загружен класс драйвера БД
+             *         Class.forName(DriverClassName);
+             */
 
             dataSource.setUsername(dbUsername);
             dataSource.setUrl(dbUrl);
